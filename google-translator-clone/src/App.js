@@ -1,22 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
-import { useEffect } from 'react';
-const axios = require("axios").default
+import React from 'react'
+import './App.css'
+import { useEffect, useState } from 'react'
+// const axios = require("axios").default
+
 function App() {
 
   const [to, setTo]= useState("")
   const [from, setFrom]= useState("")
   const [input, setInput]= useState("")
   const [output, setOutput]= useState("")
+  const [options, setOptions]= useState([])
 
-  useEffect(()=> {
-    axios.get("https://libretranslate.com/languages",
-    {headers:{"accept" : "application/json"}}).then(res=>{
-      console.log(res)
-    })
+useEffect(()=>{
+  fetch("https://libretranslate.com/languages")
+  .then (res=> res.json())
+  .then (res=>{
+    setOptions(res)
   })
+})
 
-  // curl -X GET "https://libretranslate.com/languages" -H  "accept: application/json"
   return (
     <div className="App">
       <header className="App-header">
@@ -25,14 +27,13 @@ function App() {
        <div>
          FROM: 
          <select>
-           <option value="1">1</option>
-           <option value="2">2</option>
-           </select>
+           {options.map(opt => <option value={opt.code}> {opt.name} </option>)}
+         </select>
 
            TO: 
          <select>
-           <option value="1">1</option>
-           <option value="2">2</option>
+         {options.map(opt => <option value={opt.code}>{opt.name}</option>)}
+      
            </select>
          </div>
          
@@ -45,7 +46,7 @@ function App() {
          </div>
 
          <div>
-           <button classname="submit-button">TRANSLATE </button>
+           <button className="submit-button">TRANSLATE </button>
          </div>
     
     </div>
