@@ -11,6 +11,33 @@ function App() {
   const [output, setOutput]= useState("")
   const [options, setOptions]= useState([])
 
+// const params = new URLSearchParams();
+// params.append("q", input);
+// params.append("source", from);
+// params.append("target", to);
+// params.append("api_key", to);
+
+// fetch("https://libretranslate.com/translate", params)
+
+const translate = () => {
+  const res = fetch("https://libretranslate.com/translate", {
+    method: "POST",
+    body: JSON.stringify({
+      q: "Hello!",
+      source: "en",
+      target: "es",
+      format: "text",
+      api_key: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    }),
+    headers: {
+      "accept": "application/json",
+      "Content-Type": "application/json" }
+  })
+  .then(res => res.json())
+  .then (res => console.log(res));
+}
+
+
 useEffect(()=>{
   fetch("https://libretranslate.com/languages")
   .then (res=> res.json())
@@ -46,7 +73,7 @@ useEffect(()=>{
          </div>
 
          <div>
-           <button className="submit-button">TRANSLATE </button>
+           <button onClick ={e => translate()} className="submit-button">TRANSLATE </button>
          </div>
     
     </div>
